@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import exampleData from './assets/example-data';
+import TemplateLoader from './components/TemplateLoader';
+import PersonalDetails from './components/personalDetails/PersonalDetails';
+import Resume from './components/Resume';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [personalInfo, setPersonalinfo] = useState(exampleData.personalInfo);
+    const [educationInfo, setEducationInfo] = useState(exampleData.education);
+    const [experienceInfo, setExperienceInfo] = useState(exampleData.experience);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handlePersonalInfoChange = (e) => {
+        const { index } = e.target.dataset;
+        setPersonalinfo({...personalInfo, [index]: e.target.value});
+    }
+    
+    return (
+        <main>
+            <section className="info">
+                <section className='clear-load card'>
+                </section>
+
+                <section className='personal-details card'>
+                    <PersonalDetails 
+                        fullName={personalInfo.fullName}
+                        email={personalInfo.email}
+                        phoneNumber={personalInfo.phoneNumber}
+                        address={personalInfo.address}
+                        onChange={handlePersonalInfoChange} 
+                    />
+                </section>
+
+                <section className="education card">
+                </section>
+
+                <section className="experience card">
+                </section>
+            </section>
+
+            <section className="resume">
+                <div className="left-side">
+                    <Resume
+                        personalInfo={personalInfo}
+                    />
+                </div>
+            </section>
+
+            <section className="customization">
+                
+            </section>
+        </main>
+    )
 }
 
 export default App

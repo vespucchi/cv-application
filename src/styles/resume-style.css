@@ -1,0 +1,20 @@
+.resume {
+    display: grid;
+    grid-template-columns: 8fr 10fr;
+    justify-items: center;
+}
+
+.resume .personal-details {
+    padding: 35px 35px;
+}
+
+.resume .left-side {
+    width: 100%;
+    background-color: var(--theme);
+}
+
+.resume .personal-details {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+}
