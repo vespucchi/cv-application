@@ -15,10 +15,10 @@ function Experience({ experienceInfo, editExperienceItem, addExperienceItem, set
                         <ul>
                             {
                                 experienceInfo.map((element) => (
-                                    <li key={element.key} onClick={() => setEditExperienceItem(element)}>
-                                        {element.companyName}
-                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={(e) => toggleExperience(e, element.key)} />
-                                        <img src={trash} alt="" />
+                                    <li key={element.key}>
+                                        <p onClick={() => setEditExperienceItem(element)}>{element.companyName}</p>
+                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={() => toggleExperience(element.key)} />
+                                        <img src={trash} alt="" onClick={() => removeExperience(element.key)} />
                                     </li>
                                 ))
                             }

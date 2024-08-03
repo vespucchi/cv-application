@@ -44,8 +44,7 @@ function App() {
         }));
     };
 
-    const toggleEducation = (e, key) => {
-        e.stopPropagation();
+    const toggleEducation = (key) => {
         savedData.hideEducation(key);
         const newList = savedData.educationList();
         setEducationInfo(newList.map((el) => {
@@ -75,8 +74,7 @@ function App() {
         setExperienceInfo(savedData.experienceList());
     };
 
-    const toggleExperience = (e, key) => {
-        e.stopPropagation();
+    const toggleExperience = (key) => {
         savedData.hideExperience(key);
         const newList = savedData.experienceList();
         setExperienceInfo(newList.map((el) => {

@@ -14,10 +14,10 @@ const Education = ({ educationInfo, editEducationItem, addEducationItem, setEdit
                         <ul>
                             {
                                 educationInfo.map((element) => (
-                                    <li key={element.key} onClick={() => setEditEducationItem(element)}>
-                                        {element.schoolName}
-                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={(e) => toggleEducation(e, element.key)} />
-                                        <img src={trash} alt="" onClick={(e) => removeEducation(e, element.key)} />
+                                    <li key={element.key}>
+                                        <p onClick={() => setEditEducationItem(element)}>{element.schoolName}</p>
+                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={() => toggleEducation(element.key)} />
+                                        <img src={trash} alt="" onClick={() => removeEducation(element.key)} />
                                     </li>
                                 ))
                             }

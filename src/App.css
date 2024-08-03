@@ -103,7 +103,12 @@ li {
     gap: 15px;
 }
 
-li img:nth-child(1) {
+li p,
+li img {
+    cursor: pointer;
+}
+
+li img:nth-child(2) {
     margin-left: auto;
 }
 
