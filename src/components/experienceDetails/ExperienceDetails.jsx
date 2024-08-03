@@ -1,18 +1,29 @@
 import InputGenerator from "../InputGenerator";
+import trash from '../../assets/trash.svg';
+import eyeShow from '../../assets/eye-show.svg';
+import eyeOff from '../../assets/eye-off.svg';
 
-function Experience({ experienceInfo, editExperienceItem, addExperienceItem, setEditExperienceItem, setAddExperienceItem, saveExperienceEdit, removeExperience, addExperience }) {
+
+function Experience({ experienceInfo, editExperienceItem, addExperienceItem, setEditExperienceItem, setAddExperienceItem, saveExperienceEdit, removeExperience, addExperience, toggleExperience }) {
     if (!editExperienceItem) {
         if (!addExperienceItem) {
             // EXPERIENCE LIST
             return (
                 <>
-                    <ul>
-                        {
-                            experienceInfo.length !== 0 && experienceInfo.map((element) => (
-                                <li key={element.key} onClick={() => setEditExperienceItem(element)}>{element.companyName}</li>
-                            ))
-                        }
-                    </ul>
+                    {
+                        experienceInfo.length !== 0 &&
+                        <ul>
+                            {
+                                experienceInfo.map((element) => (
+                                    <li key={element.key} onClick={() => setEditExperienceItem(element)}>
+                                        {element.companyName}
+                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={(e) => toggleExperience(e, element.key)} />
+                                        <img src={trash} alt="" />
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    }
 
                     <button type='click' onClick={() => setAddExperienceItem(true)} className='add'>Add new</button>
                 </>

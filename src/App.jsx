@@ -10,41 +10,52 @@ import expandIcon from './assets/expand.svg'
 function App() {
     const savedData = data();
 
-    const [personalInfo, setPersonalinfo] = useState(savedData.personalInfo());
+    const [personalInfo, setPersonalInfo] = useState(savedData.personalInfo());
 
     const [educationInfo, setEducationInfo] = useState(savedData.educationList());
     const [editEducationItem, setEditEducationItem] = useState(null);
     const [addEducationItem, setAddEducationItem] = useState(null);
+    const [educationCardVisible, setEducationCardVisible] = useState(true);
 
     const [experienceInfo, setExperienceInfo] = useState(savedData.experienceList());
     const [editExperienceItem, setEditExperienceItem] = useState(null);
     const [addExperienceItem, setAddExperienceItem] = useState(null);
+    const [experienceCardVisible, setExperienceCardVisible] = useState(false);
+
 
     const savePersonalData = () => {
         savedData.savePersonalInfo(personalInfo);
-    }
+    };
 
     const saveEducationEdit = (e) => {
         e.preventDefault();
-        console.log(editEducationItem);
         savedData.editEducation(editEducationItem);
         setEditEducationItem(false);
         setEducationInfo(savedData.educationList());
-    }
+    };
 
     const removeEducation = (e) => {
         e.preventDefault();
         savedData.removeEducation(editEducationItem.key);
         setEditEducationItem(null);
         setEducationInfo(savedData.educationList());
-    }
+    };
+
+    const toggleEducation = (e, key) => {
+        e.stopPropagation();
+        savedData.hideEducation(key);
+        const newList = savedData.educationList();
+        setEducationInfo(newList.map((el) => {
+            return {...el};
+        }));
+    };
 
     const addEducation = (e) => {
         e.preventDefault();
         savedData.addEducation(addEducationItem);
         setAddEducationItem(null);
         setEducationInfo(savedData.educationList());
-    }
+    };
 
     const saveExperienceEdit = (e) => {
         e.preventDefault();
@@ -52,28 +63,51 @@ function App() {
         savedData.editExperience(editExperienceItem);
         setEditExperienceItem(false);
         setExperienceInfo(savedData.experienceList());
-    }
+    };
 
     const removeExperience = (e) => {
         e.preventDefault();
         savedData.removeExperience(editExperienceItem.key);
         setEditExperienceItem(null);
         setExperienceInfo(savedData.experienceList());
-    }
+    };
+
+    const toggleExperience = (e, key) => {
+        e.stopPropagation();
+        savedData.hideExperience(key);
+        const newList = savedData.experienceList();
+        setExperienceInfo(newList.map((el) => {
+            return { ...el };
+        }));
+    };
 
     const addExperience = (e) => {
         e.preventDefault();
         savedData.addExperience(addExperienceItem);
         setAddExperienceItem(null);
         setExperienceInfo(savedData.experienceList());
-    }
+    };
+
+    const clearResume = () => {
+        savedData.clearData();
+        setPersonalInfo(savedData.personalInfo());
+        setEducationInfo(savedData.educationList());
+        setExperienceInfo(savedData.experienceList());
+    };
+
+    const loadTemplate = () => {
+        savedData.loadData();
+        setPersonalInfo(savedData.personalInfo());
+        setEducationInfo(savedData.educationList());
+        setExperienceInfo(savedData.experienceList());
+    };
 
     return (
         <main>
             <section className="info">
                 <section className='clear-load card'>
-                    <button id='clear'>Clear resume</button>
-                    <button id='load'>Load template</button>
+                    <button id='clear' onClick={clearResume} >Clear resume</button>
+                    <button id='load' onClick={loadTemplate} >Load template</button>
                 </section>
 
                 <section className='personal-details card'>
@@ -82,18 +116,18 @@ function App() {
                         email={personalInfo.email}
                         phoneNumber={personalInfo.phoneNumber}
                         address={personalInfo.address}
-                        onChange={(e) => setPersonalinfo({ ...personalInfo, [e.target.dataset.index]: e.target.value })}
+                        onChange={(e) => setPersonalInfo({ ...personalInfo, [e.target.dataset.index]: e.target.value })}
                         onFocusOut={savePersonalData}
                     />
                 </section>
 
                 <section className="education card">
-                    <div className="card-header">
+                    <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
                         <h1>Education</h1>
-                        <img src={expandIcon} />
+                        <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
                     </div>
 
-                    <Education 
+                    {educationCardVisible && <Education
                         educationInfo={educationInfo}
                         editEducationItem={editEducationItem}
                         addEducationItem={addEducationItem}
@@ -102,17 +136,19 @@ function App() {
                         setAddEducationItem={setAddEducationItem}
                         saveEducationEdit={saveEducationEdit}
                         removeEducation={removeEducation}
-                        addEducation={addEducation} 
-                    />
+                        addEducation={addEducation}
+                        toggleEducation={toggleEducation}
+                    />}
+                    
                 </section>
 
                 <section className="experience card">
-                    <div className="card-header">
+                    <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
                         <h1>Experience</h1>
-                        <img src={expandIcon} />
+                        <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
                     </div>
 
-                    <Experience
+                    {experienceCardVisible && <Experience
                         experienceInfo={experienceInfo}
                         editExperienceItem={editExperienceItem}
                         addExperienceItem={addExperienceItem}
@@ -122,7 +158,9 @@ function App() {
                         saveExperienceEdit={saveExperienceEdit}
                         removeExperience={removeExperience}
                         addExperience={addExperience}
-                    />
+                        toggleExperience={toggleExperience}
+                    />}
+
                 </section>
             </section>
 
@@ -140,6 +178,7 @@ function App() {
                         <h2>Education</h2>
 
                         {educationInfo.map((el) => {
+                            // IF EDUCATION IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
                             if (editEducationItem && editEducationItem.key === el.key) {
                                 return (
                                     <div key={editEducationItem.key} className='education-item'>
@@ -154,7 +193,9 @@ function App() {
                                     </div>
                                 )
                             }
-                            return (
+                            // RENDER SAVED EDUCATION
+                            return el.hidden === false 
+                            ? (
                                 <div key={el.key} className='education-item'>
                                     <div className='time-location'>
                                         <p>{el.startDate} - {el.endDate}</p>
@@ -166,20 +207,22 @@ function App() {
                                     </div>
                                 </div>
                             )
-                        })}
-
-                        {addEducationItem 
-                            ? <div className='education-item'>
-                                <div className='time-location'>
-                                    <p>{addEducationItem.startDate} - {addEducationItem.endDate}</p>
-                                    <p>{addEducationItem.location}</p>
-                                </div>
-                                <div className='school-info'>
-                                    <p><strong>{addEducationItem.schoolName}</strong></p>
-                                    <p>{addEducationItem.degree}</p>
-                                </div>
-                            </div>
                             : null
+                        })}
+                        
+                        { // RENDER NEW EDUCATION
+                            addEducationItem 
+                                ? <div className='education-item'>
+                                    <div className='time-location'>
+                                        <p>{addEducationItem.startDate} - {addEducationItem.endDate}</p>
+                                        <p>{addEducationItem.location}</p>
+                                    </div>
+                                    <div className='school-info'>
+                                        <p><strong>{addEducationItem.schoolName}</strong></p>
+                                        <p>{addEducationItem.degree}</p>
+                                    </div>
+                                </div>
+                                : null
                         }
                     </div>
 
@@ -187,6 +230,7 @@ function App() {
                         <h2>Experience</h2>
 
                         {experienceInfo.map((el) => {
+                            // IF EXPERIENCE IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
                             if (editExperienceItem && editExperienceItem.key === el.key) {
                                 return (
                                     <div key={editExperienceItem.key} className='experience-item'>
@@ -202,7 +246,9 @@ function App() {
                                     </div>
                                 )
                             }
-                            return (
+                            // RENDER SAVED EXPERIENCE
+                            return el.hidden === false
+                            ? (
                                 <div key={el.key} className='experience-item'>
                                     <div className='time-location'>
                                         <p>{el.startDate} - {el.endDate}</p>
@@ -215,21 +261,23 @@ function App() {
                                     </div>
                                 </div>
                             )
+                            : null;
                         })}
 
-                        {addExperienceItem
-                            ? <div className='experience-item'>
-                                <div className='time-location'>
-                                    <p>{addExperienceItem.startDate} - {addExperienceItem.endDate}</p>
-                                    <p>{addExperienceItem.location}</p>
+                        { // RENDER NEW EXPERIENCE
+                            addExperienceItem
+                                ? <div className='experience-item'>
+                                    <div className='time-location'>
+                                        <p>{addExperienceItem.startDate} - {addExperienceItem.endDate}</p>
+                                        <p>{addExperienceItem.location}</p>
+                                    </div>
+                                    <div className='company-info'>
+                                        <p><strong>{addExperienceItem.companyName}</strong></p>
+                                        <p>{addExperienceItem.positionTitle}</p>
+                                        <p>{addExperienceItem.description}</p>
+                                    </div>
                                 </div>
-                                <div className='company-info'>
-                                    <p><strong>{addExperienceItem.companyName}</strong></p>
-                                    <p>{addExperienceItem.positionTitle}</p>
-                                    <p>{addExperienceItem.description}</p>
-                                </div>
-                            </div>
-                            : null
+                                : null
                         }
                     </div>
                 </div>

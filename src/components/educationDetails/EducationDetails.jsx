@@ -1,18 +1,29 @@
 import InputGenerator from '../InputGenerator';
+import trash from '../../assets/trash.svg';
+import eyeShow from '../../assets/eye-show.svg';
+import eyeOff from '../../assets/eye-off.svg';
 
-const Education = ({ educationInfo, editEducationItem, addEducationItem, setEditEducationItem, setAddEducationItem, saveEducationEdit, removeEducation, addEducation }) => {
+const Education = ({ educationInfo, editEducationItem, addEducationItem, setEditEducationItem, setAddEducationItem, saveEducationEdit, removeEducation, addEducation, toggleEducation }) => {
     if (!editEducationItem) {
         if (!addEducationItem) {
             // EDUCATION LIST
             return (
                 <>
-                    <ul>
-                        {
-                        educationInfo.length !== 0 && educationInfo.map((element) => (
-                                <li key={element.key} onClick={() => setEditEducationItem(element)}>{element.schoolName}</li>
-                            ))
-                        }
-                    </ul>
+                    {
+                        educationInfo.length !== 0 &&
+                        <ul>
+                            {
+                                educationInfo.map((element) => (
+                                    <li key={element.key} onClick={() => setEditEducationItem(element)}>
+                                        {element.schoolName}
+                                        <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={(e) => toggleEducation(e, element.key)} />
+                                        <img src={trash} alt="" />
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    }
+                    
 
                     <button type='click' onClick={() => setAddEducationItem(true)} className='add'>Add new</button>
                 </>

@@ -71,6 +71,7 @@ section.info {
 .card-header {
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .clear-load.card {
@@ -86,11 +87,10 @@ section.info {
 }
 
 button#clear {
-    color: crimson;
+    color: #dc143c;
 }
 
-.personal-details {
-}
+.personal-details {}
 
 
 li {
@@ -99,12 +99,27 @@ li {
     border-bottom: 1px solid var(--background);
     padding: 15px 20px;
     margin-top: -1px;
+    display: flex;
+    gap: 15px;
+}
+
+li img:nth-child(1) {
+    margin-left: auto;
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.card-header img.expanded {
+    transition: transform 0.2s;
+}
+
+.card-header img.collapsed {
+    transform: rotate(0.50turn);
+    transition: transform 0.2s;
 }
 
 button.add {
@@ -116,16 +131,15 @@ button.add {
     margin-right: auto;
 }
 
-.experience {
-}
+.card-header img.expanded .experience ul {}
 
 .resume {
     display: grid;
     grid-template-columns: 1fr 2fr;
+    min-height: 1000px;
 }
 
-.resume .personal-details {
-}
+.resume .personal-details {}
 
 .resume .left-side {
     background-color: var(--theme);
