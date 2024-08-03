@@ -1,40 +1,9 @@
-import { useState } from 'react';
 import InputGenerator from '../InputGenerator';
-import data from '../../assets/savedData';
 
-const savedData = data();
-
-const Education = () => {
-    const [educationInfo, setEducationInfo] = useState(savedData.educationList());
-    const [editEducationItem, setEditEducationItem] = useState(null);
-    const [addEducationItem, setAddEducationItem] = useState(null);
-
-    const saveEducationEdit = (e) => {
-        e.preventDefault();
-        console.log(editEducationItem);
-        savedData.editEducation(editEducationItem);
-        setEditEducationItem(false);
-        setEducationInfo(savedData.educationList());
-    }
-
-    const removeEducation = (e) => {
-        e.preventDefault();
-        savedData.removeEducation(editEducationItem.key);
-        setEditEducationItem(null);
-        setEducationInfo(savedData.educationList());
-    }
-
-    const addEducation = (e) => {
-        e.preventDefault();
-        savedData.addEducation(addEducationItem);
-        setAddEducationItem(null);
-        setEducationInfo(savedData.educationList());
-    }
-
+const Education = ({ educationInfo, editEducationItem, addEducationItem, setEditEducationItem, setAddEducationItem, saveEducationEdit, removeEducation, addEducation }) => {
     if (!editEducationItem) {
         if (!addEducationItem) {
             // EDUCATION LIST
-            console.log(educationInfo)
             return (
                 <>
                     <ul>

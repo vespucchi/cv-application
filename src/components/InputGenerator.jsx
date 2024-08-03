@@ -2,12 +2,14 @@ function InputGenerator({
     labelText,
     value,
     type,
+    placeholder,
     dataIndex,
-    onChange
+    onChange,
+    onFocusOut
 }) {
     return (
         <label>{labelText}
-            <input type={type} value={value} data-index={dataIndex} onChange={onChange} />
+            <input type={type} value={value} placeholder={placeholder} data-index={dataIndex} onChange={onChange} onBlur={onFocusOut} />
         </label>
     )
 }

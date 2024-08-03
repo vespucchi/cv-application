@@ -1,19 +1,10 @@
 :root {
     /* colors */
     --white: #F5F5F5;
-    --black: #121212;
+    --black: #33363F;
     --theme: #00649E;
+    --title-bg: #00649e52;
     --background: #ebebeb;
-}
-
-main {
-    min-width: 1000px;
-    max-width: 1700px;
-    width: 80%;
-    display: grid;
-    grid-template-columns: 3fr 4fr 100px;
-    grid-template-rows: 100vh;
-    gap: 30px;
 }
 
 form {
@@ -36,6 +27,29 @@ form input {
     background-color: var(--background);
 }
 
+.edu-btns {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: right;
+}
+
+button.remove {
+    margin-right: auto;
+    background-color: crimson;
+    color: var(--white);
+}
+
+button.cancel {
+    border: 1px solid var(--black);
+    background-color: transparent;
+}
+
+button.save {
+    background-color: #18a7fa;
+    color: var(--white)
+}
+
 section.info {
     display: flex;
     flex-direction: column;
@@ -54,25 +68,102 @@ section.info {
     flex-direction: column;
 }
 
-.clear-load {
+.card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.clear-load.card {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     padding: 5px;
+    height: 50px;
+}
+
+.clear-load button {
+    background-color: transparent;
+}
+
+button#clear {
+    color: crimson;
 }
 
 .personal-details {
 }
 
 
+li {
+    list-style-type: none;
+    border-top: 1px solid var(--background);
+    border-bottom: 1px solid var(--background);
+    padding: 15px 20px;
+    margin-top: -1px;
+}
 
-.education {
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+button.add {
+    background-color: transparent;
+    color: var(--black);
+    width: fit-content;
+    border: 1px solid var(--black);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .experience {
 }
 
-.cv-result {
+.resume {
     display: grid;
-    grid-template-columns: 10fr 8fr;
+    grid-template-columns: 1fr 2fr;
+}
+
+.resume .personal-details {
+}
+
+.resume .left-side {
+    background-color: var(--theme);
+    padding: 30px;
+}
+
+.resume .right-side {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 50px;
+}
+
+.resume .personal-details {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+}
+
+.resume .education-list,
+.resume .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.resume .education-item,
+.resume .experience-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.resume .right-side h2 {
+    background-color: var(--title-bg);
+    color: var(--theme);
+    text-align: center;
+    padding: 5px;
 }

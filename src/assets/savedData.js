@@ -1,12 +1,16 @@
 import { getStorage, setStorage } from "./localStorage";
 import uniqid from 'uniqid';
 
-
 let savedData;
 
 if (getStorage('savedData') === null) {
     savedData = {
-        personalDetails: {},
+        personalDetails: {
+            fullName: '',
+            email: '',
+            phoneNumber: '',
+            address: ''
+        },
         education: [],
         experience: []
     }
@@ -17,20 +21,27 @@ if (getStorage('savedData') === null) {
 }
 
 export default function data() {
+    const personalInfo = () => savedData.personalDetails;
     const educationList = () => savedData.education;
+    const experienceList = () => savedData.experience;
 
-    const findIndex = (key) => {
+    const savePersonalInfo = (data) => {
+        savedData.personalDetails = data;
+        setStorage('savedData', savedData);
+    }
+
+    const findEducationIndex = (key) => {
         return savedData.education.findIndex((element) => element.key === key);
     }
 
     const editEducation = (data) => {
-        const educationIndex = findIndex(data.key);
+        const educationIndex = findEducationIndex(data.key);
         savedData.education[educationIndex] = data;
         setStorage('savedData', savedData);
     }
 
     const removeEducation = (key) => {
-        const educationIndex = findIndex(key);
+        const educationIndex = findEducationIndex(key);
         savedData.education.splice(educationIndex, 1);
         setStorage('savedData', savedData);
     }
@@ -40,5 +51,26 @@ export default function data() {
         setStorage('savedData', savedData);
     }
 
-    return { educationList, editEducation, removeEducation, addEducation };
+    const findExperienceIndex = (key) => {
+        return savedData.experience.findIndex((element) => element.key === key);
+    }
+
+    const editExperience = (data) => {
+        const experienceIndex = findExperienceIndex(data.key);
+        savedData.experience[experienceIndex] = data;
+        setStorage('savedData', savedData);
+    }
+
+    const removeExperience = (key) => {
+        const experienceIndex = findExperienceIndex(key);
+        savedData.experience.splice(experienceIndex, 1);
+        setStorage('savedData', savedData);
+    }
+
+    const addExperience = ({ companyName = '', positionTitle = '', location = '', startDate = '', endDate = '', description = '' }) => {
+        savedData.experience.push({ companyName, positionTitle, location, startDate, endDate, description, key: uniqid() });
+        setStorage('savedData', savedData);
+    }
+
+    return { personalInfo, educationList, experienceList, savePersonalInfo, editEducation, removeEducation, addEducation, editExperience, removeExperience, addExperience };
 }
