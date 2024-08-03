@@ -25,7 +25,7 @@ const Education = ({ educationInfo, editEducationItem, addEducationItem, setEdit
                     }
                     
 
-                    <button type='click' onClick={() => setAddEducationItem(true)} className='add'>Add new</button>
+                    <button type='click' onClick={() => setAddEducationItem(true)} className='add'>Add</button>
                 </>
             )
         }

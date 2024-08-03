@@ -1,5 +1,4 @@
 import InputGenerator from "../InputGenerator";
-import data from '../../assets/savedData';
 
 function PersonalDetails({ fullName, email, phoneNumber, address, onChange, onFocusOut } ) {
     return (

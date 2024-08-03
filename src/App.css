@@ -118,6 +118,15 @@ li img:nth-child(2) {
     gap: 25px;
 }
 
+.card-header {
+    display: flex;
+    gap: 20px;
+}
+
+.card-header h1 {
+    margin-right: auto;
+}
+
 .card-header img.expanded {
     transition: transform 0.2s;
 }
@@ -136,19 +145,35 @@ button.add {
     margin-right: auto;
 }
 
-.card-header img.expanded .experience ul {}
-
 .resume {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
     min-height: 1000px;
 }
-
-.resume .personal-details {}
 
 .resume .left-side {
     background-color: var(--theme);
     padding: 30px;
+}
+
+.resume .personal-details {
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
+}
+
+.resume .personal-details div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.resume .personal-details h1 {
+    margin-bottom: 10px;
+}
+
+.resume .personal-details {
+    font-size: 1.1rem;
 }
 
 .resume .right-side {
@@ -158,12 +183,6 @@ button.add {
     align-items: center;
     gap: 20px;
     padding: 30px 50px;
-}
-
-.resume .personal-details {
-    display: flex;
-    flex-direction: column;
-    color: var(--white);
 }
 
 .resume .education-list,

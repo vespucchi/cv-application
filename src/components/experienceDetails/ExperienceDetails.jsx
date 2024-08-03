@@ -25,7 +25,7 @@ function Experience({ experienceInfo, editExperienceItem, addExperienceItem, set
                         </ul>
                     }
 
-                    <button type='click' onClick={() => setAddExperienceItem(true)} className='add'>Add new</button>
+                    <button type='click' onClick={() => setAddExperienceItem(true)} className='add'>Add</button>
                 </>
             )
         }

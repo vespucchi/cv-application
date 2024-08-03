@@ -5,7 +5,9 @@ import Education from './components/educationDetails/EducationDetails';
 import Experience from './components/experienceDetails/ExperienceDetails';
 import data from './assets/savedData';
 import PersonalDetailsResume from './components/personalDetails/PersonalDetailsResume';
-import expandIcon from './assets/expand.svg'
+import expandIcon from './assets/expand.svg';
+import education from './assets/education.svg';
+import work from './assets/work.svg';
 
 function App() {
     const savedData = data();
@@ -136,6 +138,7 @@ function App() {
 
                 <section className="education card">
                     <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
+                        <img src={education} alt="" />
                         <h1>Education</h1>
                         <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
                     </div>
@@ -157,6 +160,7 @@ function App() {
 
                 <section className="experience card">
                     <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
+                        <img src={work} alt="" />
                         <h1>Experience</h1>
                         <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
                     </div>
