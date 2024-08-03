@@ -17,7 +17,7 @@ const Education = ({ educationInfo, editEducationItem, addEducationItem, setEdit
                                     <li key={element.key} onClick={() => setEditEducationItem(element)}>
                                         {element.schoolName}
                                         <img src={element.hidden ? eyeOff : eyeShow} alt="" onClick={(e) => toggleEducation(e, element.key)} />
-                                        <img src={trash} alt="" />
+                                        <img src={trash} alt="" onClick={(e) => removeEducation(e, element.key)} />
                                     </li>
                                 ))
                             }
@@ -58,7 +58,7 @@ const Education = ({ educationInfo, editEducationItem, addEducationItem, setEdit
                 <InputGenerator labelText='End date' value={editEducationItem.endDate} type='text' placeholder='Enter end date' dataIndex='endDate' onChange={(e) => setEditEducationItem({ ...editEducationItem, endDate: e.target.value })} />
             </form>
             <div className="edu-btns">
-                <button type='click' onClick={removeEducation} className='remove'>Remove</button>
+                <button type='click' onClick={() => removeEducation(editEducationItem.key)} className='remove'>Remove</button>
                 <button type='click' onClick={() => setEditEducationItem(null)} className='cancel'>Cancel</button>
                 <button type='submit' className='save' form='edit-education'>Save</button>
             </div>

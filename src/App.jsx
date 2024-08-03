@@ -34,11 +34,14 @@ function App() {
         setEducationInfo(savedData.educationList());
     };
 
-    const removeEducation = (e) => {
-        e.preventDefault();
-        savedData.removeEducation(editEducationItem.key);
+    const removeEducation = (e, key) => {
+        e.stopPropagation();
+        savedData.removeEducation(key);
         setEditEducationItem(null);
-        setEducationInfo(savedData.educationList());
+        const newList = savedData.educationList();
+        setEducationInfo(newList.map((el) => {
+            return { ...el };
+        }));
     };
 
     const toggleEducation = (e, key) => {
@@ -96,10 +99,22 @@ function App() {
     };
 
     const loadTemplate = () => {
+        console.log('test')
         savedData.loadData();
-        setPersonalInfo(savedData.personalInfo());
-        setEducationInfo(savedData.educationList());
-        setExperienceInfo(savedData.experienceList());
+        console.log(savedData.personalInfo())
+
+        const personalInfo = savedData.personalInfo()
+        setPersonalInfo({ ...personalInfo });
+
+        const educationList = savedData.educationList()
+        setEducationInfo(educationList.map((edu) => {
+            return { ...edu }
+        }));
+
+        const experienceList = savedData.experienceList()
+        setExperienceInfo(experienceList.map((exp) => {
+            return { ...exp }
+        }));
     };
 
     return (

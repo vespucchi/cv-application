@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 
-const exampleData = {
+const exampleData = () => {
+    return {
     personalDetails: {
         fullName: "Josephine Meyers",
         email: "josephine.meyers@mail.co.uk",
@@ -53,6 +54,6 @@ const exampleData = {
             key: uniqid(),
         },
     ],
-};
+}};
 
 export default exampleData;

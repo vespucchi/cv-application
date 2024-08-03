@@ -3,9 +3,9 @@ import uniqid from 'uniqid';
 import exampleData from "./example-data";
 
 let savedData;
-
+console.log(exampleData())
 if (getStorage('savedData') === null) {
-    savedData = exampleData;
+    savedData = exampleData();
     setStorage('savedData', savedData);
 } else {
     savedData = getStorage('savedData');
@@ -91,7 +91,7 @@ export default function data() {
     };
 
     const loadData = () => {
-        savedData = exampleData;
+        savedData = exampleData()
         setStorage('savedData', savedData);
     };
 
