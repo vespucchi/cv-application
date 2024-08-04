@@ -41,7 +41,8 @@ button.remove {
     color: var(--white);
 }
 
-button.cancel {
+button.cancel,
+button#reset {
     border: 1px solid var(--black);
     background-color: transparent;
 }
@@ -202,12 +203,17 @@ button.add {
 .resume.layout-right .right-side {
     background-color: var(--theme);
     padding: 30px;
+    display: flex;
 }
 
 .resume .personal-details {
     display: flex;
     flex-direction: column;
     color: var(--white);
+}
+
+.resume.layout-right .personal-details {
+    margin-left: auto;
 }
 
 .resume .personal-details div {

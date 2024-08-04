@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { setStorage, getStorage } from './assets/localStorage';
 import LayoutCard from './components/customization/Layout';
+import ThemeColorCard from './components/customization/Theme';
 import PersonalDetails from './components/personalDetails/PersonalDetails';
 import Education from './components/educationDetails/EducationDetails';
 import Experience from './components/experienceDetails/ExperienceDetails';
@@ -31,7 +32,10 @@ function App() {
 
     const [currentTab, setCurrentTab] = useState('content');
     const [currentLayout, setCurrentLayout] = useState(() => getStorage('layout') !== null ? getStorage('layout') : 0);
+    const [currentTheme, setCurrentTheme] = useState(() => getStorage('theme') !== null ? getStorage('theme') : '#00649E');
 
+    document.documentElement.style.setProperty('--theme', currentTheme);
+    document.documentElement.style.setProperty('--title-bg', `${currentTheme}52`);
 
     const savePersonalData = () => {
         savedData.savePersonalInfo(personalInfo);
@@ -129,6 +133,20 @@ function App() {
         setCurrentLayout(index);
     };
 
+    const changeThemeColor = (color) => {
+        document.documentElement.style.setProperty('--theme', color);
+        document.documentElement.style.setProperty('--title-bg', `${color}52`);
+        setStorage('theme', color);
+        setCurrentTheme(color);
+    };
+
+    const resetThemeColor = () => {
+        document.documentElement.style.setProperty('--theme', '#00649E');
+        document.documentElement.style.setProperty('--title-bg', '#00649E52');
+        setStorage('theme', '#00649E');
+        setCurrentTheme('#00649E');
+    }
+
     return (
         <main>
             <section className="info">
@@ -210,13 +228,15 @@ function App() {
                                     setCurrentLayout={changeLayoutDesign}
                                 />
                             </section>
-
+                                
                             <section className='color card'>
-
-                            </section>
-
-                            <section className='font card'>
-
+                                <h2>Theme color</h2>
+                                <ThemeColorCard 
+                                    currentTheme={currentTheme}
+                                    setCurrentTheme={setCurrentTheme}
+                                    saveCurrentTheme={changeThemeColor}
+                                    resetThemeColor={resetThemeColor}
+                                />
                             </section>
                         </>
                 }
