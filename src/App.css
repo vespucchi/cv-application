@@ -182,13 +182,24 @@ button.add {
     margin-right: auto;
 }
 
-.resume {
+.resume.layout-left {
     display: grid;
     grid-template-columns: 2fr 3fr;
     min-height: 1000px;
 }
 
-.resume .left-side {
+.resume.layout-right {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    min-height: 1000px;
+}
+
+.resume.layout-left .left-side {
+    background-color: var(--theme);
+    padding: 30px;
+}
+
+.resume.layout-right .right-side {
     background-color: var(--theme);
     padding: 30px;
 }
@@ -213,7 +224,16 @@ button.add {
     font-size: 1.1rem;
 }
 
-.resume .right-side {
+.resume.resume.layout-left .right-side {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 50px;
+}
+
+.resume.resume.layout-right .left-side {
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -236,7 +256,8 @@ button.add {
     grid-template-columns: 1fr 1fr;
 }
 
-.resume .right-side h2 {
+.resume .right-side h2,
+.resume .left-side h2 {
     background-color: var(--title-bg);
     color: var(--theme);
     text-align: center;

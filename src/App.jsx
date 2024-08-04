@@ -224,7 +224,7 @@ function App() {
             </section>
             { 
                 currentLayout === 0
-                    ?   <section className="resume">
+                    ? <section className='resume layout-left'>
                             <div className="left-side">
                                 <PersonalDetailsResume
                                     fullName={personalInfo.fullName}
@@ -342,7 +342,7 @@ function App() {
                                 </div>
                             </div>
                         </section>
-                    :   <section className="resume">
+                    :   <section className="resume layout-right">
                             <div className="left-side">
                                 <div className='education-list'>
                                     <h2>Education</h2>
