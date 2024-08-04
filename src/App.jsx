@@ -8,6 +8,9 @@ import PersonalDetailsResume from './components/personalDetails/PersonalDetailsR
 import expandIcon from './assets/expand.svg';
 import education from './assets/education.svg';
 import work from './assets/work.svg';
+import content from './assets/content.svg';
+import customization from './assets/customization.svg';
+
 
 function App() {
     const savedData = data();
@@ -23,6 +26,8 @@ function App() {
     const [editExperienceItem, setEditExperienceItem] = useState(null);
     const [addExperienceItem, setAddExperienceItem] = useState(null);
     const [experienceCardVisible, setExperienceCardVisible] = useState(false);
+
+    const [currentTab, setCurrentTab] = useState('content');
 
 
     const savePersonalData = () => {
@@ -69,9 +74,8 @@ function App() {
         setExperienceInfo(savedData.experienceList());
     };
 
-    const removeExperience = (e) => {
-        e.preventDefault();
-        savedData.removeExperience(editExperienceItem.key);
+    const removeExperience = (key) => {
+        savedData.removeExperience(key);
         setEditExperienceItem(null);
         setExperienceInfo(savedData.experienceList());
     };
@@ -120,65 +124,79 @@ function App() {
     return (
         <main>
             <section className="info">
+                <section className="customization card">
+                    <button id='content' className={currentTab === 'content' ? 'active' : null} onClick={() => setCurrentTab('content')} disabled={currentTab === 'content' ? true : null} >
+                        <img src={content} alt="" />
+                        <p>Content</p>
+                    </button>
+                    <button id='customization' className={currentTab === 'customization' ? 'active' : null} onClick={() => setCurrentTab('customization')} disabled={currentTab === 'customization' ? true : null}>
+                        <img src={customization} alt="" />
+                        <p>Customize</p>
+                    </button>
+                </section>
                 <section className='clear-load card'>
                     <button id='clear' onClick={clearResume} >Clear resume</button>
                     <button id='load' onClick={loadTemplate} >Load template</button>
                 </section>
 
-                <section className='personal-details card'>
-                    <PersonalDetails 
-                        fullName={personalInfo.fullName}
-                        email={personalInfo.email}
-                        phoneNumber={personalInfo.phoneNumber}
-                        address={personalInfo.address}
-                        onChange={(e) => setPersonalInfo({ ...personalInfo, [e.target.dataset.index]: e.target.value })}
-                        onFocusOut={savePersonalData}
-                    />
-                </section>
+                {
+                    currentTab === 'content'
+                        ?   <>
+                                <section className='personal-details card'>
+                                        <PersonalDetails
+                                            fullName={personalInfo.fullName}
+                                            email={personalInfo.email}
+                                            phoneNumber={personalInfo.phoneNumber}
+                                            address={personalInfo.address}
+                                            onChange={(e) => setPersonalInfo({ ...personalInfo, [e.target.dataset.index]: e.target.value })}
+                                            onFocusOut={savePersonalData}
+                                        />
+                                    </section>
+                                    <section className="education card">
+                                        <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
+                                            <img src={education} alt="" />
+                                            <h1>Education</h1>
+                                            <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
+                                        </div>
+                                        {educationCardVisible && <Education
+                                            educationInfo={educationInfo}
+                                            editEducationItem={editEducationItem}
+                                            addEducationItem={addEducationItem}
+                                            setEducationInfo={setEducationInfo}
+                                            setEditEducationItem={setEditEducationItem}
+                                            setAddEducationItem={setAddEducationItem}
+                                            saveEducationEdit={saveEducationEdit}
+                                            removeEducation={removeEducation}
+                                            addEducation={addEducation}
+                                            toggleEducation={toggleEducation}
+                                        />}
+                                    </section>
 
-                <section className="education card">
-                    <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
-                        <img src={education} alt="" />
-                        <h1>Education</h1>
-                        <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
-                    </div>
+                                    <section className="experience card">
+                                        <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
+                                            <img src={work} alt="" />
+                                            <h1>Experience</h1>
+                                            <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
+                                        </div>
 
-                    {educationCardVisible && <Education
-                        educationInfo={educationInfo}
-                        editEducationItem={editEducationItem}
-                        addEducationItem={addEducationItem}
-                        setEducationInfo={setEducationInfo}
-                        setEditEducationItem={setEditEducationItem}
-                        setAddEducationItem={setAddEducationItem}
-                        saveEducationEdit={saveEducationEdit}
-                        removeEducation={removeEducation}
-                        addEducation={addEducation}
-                        toggleEducation={toggleEducation}
-                    />}
-                    
-                </section>
+                                        {experienceCardVisible && <Experience
+                                            experienceInfo={experienceInfo}
+                                            editExperienceItem={editExperienceItem}
+                                            addExperienceItem={addExperienceItem}
+                                            setExperienceInfo={setExperienceInfo}
+                                            setEditExperienceItem={setEditExperienceItem}
+                                            setAddExperienceItem={setAddExperienceItem}
+                                            saveExperienceEdit={saveExperienceEdit}
+                                            removeExperience={removeExperience}
+                                            addExperience={addExperience}
+                                            toggleExperience={toggleExperience}
+                                        />}
 
-                <section className="experience card">
-                    <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
-                        <img src={work} alt="" />
-                        <h1>Experience</h1>
-                        <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
-                    </div>
-
-                    {experienceCardVisible && <Experience
-                        experienceInfo={experienceInfo}
-                        editExperienceItem={editExperienceItem}
-                        addExperienceItem={addExperienceItem}
-                        setExperienceInfo={setExperienceInfo}
-                        setEditExperienceItem={setEditExperienceItem}
-                        setAddExperienceItem={setAddExperienceItem}
-                        saveExperienceEdit={saveExperienceEdit}
-                        removeExperience={removeExperience}
-                        addExperience={addExperience}
-                        toggleExperience={toggleExperience}
-                    />}
-
-                </section>
+                                    </section>
+                            </>
+                    : null                    
+                }
+                
             </section>
 
             <section className="resume">
@@ -298,10 +316,6 @@ function App() {
                         }
                     </div>
                 </div>
-            </section>
-
-            <section className="customization">
-                
             </section>
         </main>
     )
