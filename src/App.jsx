@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './App.css';
+import { setStorage, getStorage } from './assets/localStorage';
+import LayoutCard from './components/customization/Layout';
 import PersonalDetails from './components/personalDetails/PersonalDetails';
 import Education from './components/educationDetails/EducationDetails';
 import Experience from './components/experienceDetails/ExperienceDetails';
@@ -28,6 +30,7 @@ function App() {
     const [experienceCardVisible, setExperienceCardVisible] = useState(false);
 
     const [currentTab, setCurrentTab] = useState('content');
+    const [currentLayout, setCurrentLayout] = useState(() => getStorage('layout') !== null ? getStorage('layout') : 0);
 
 
     const savePersonalData = () => {
@@ -121,6 +124,11 @@ function App() {
         }));
     };
 
+    const changeLayoutDesign = (index) => {
+        setStorage('layout', index);
+        setCurrentLayout(index);
+    };
+
     return (
         <main>
             <section className="info">
@@ -151,172 +159,308 @@ function App() {
                                             onChange={(e) => setPersonalInfo({ ...personalInfo, [e.target.dataset.index]: e.target.value })}
                                             onFocusOut={savePersonalData}
                                         />
-                                    </section>
-                                    <section className="education card">
-                                        <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
-                                            <img src={education} alt="" />
-                                            <h1>Education</h1>
-                                            <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
-                                        </div>
-                                        {educationCardVisible && <Education
-                                            educationInfo={educationInfo}
-                                            editEducationItem={editEducationItem}
-                                            addEducationItem={addEducationItem}
-                                            setEducationInfo={setEducationInfo}
-                                            setEditEducationItem={setEditEducationItem}
-                                            setAddEducationItem={setAddEducationItem}
-                                            saveEducationEdit={saveEducationEdit}
-                                            removeEducation={removeEducation}
-                                            addEducation={addEducation}
-                                            toggleEducation={toggleEducation}
-                                        />}
-                                    </section>
+                                </section>
 
-                                    <section className="experience card">
-                                        <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
-                                            <img src={work} alt="" />
-                                            <h1>Experience</h1>
-                                            <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
-                                        </div>
+                                <section className="education card">
+                                    <div className="card-header" onClick={() => setEducationCardVisible(!educationCardVisible)} >
+                                        <img src={education} alt="" />
+                                        <h1>Education</h1>
+                                        <img src={expandIcon} className={educationCardVisible ? 'expanded' : 'collapsed'} />
+                                    </div>
+                                    {educationCardVisible && <Education
+                                        educationInfo={educationInfo}
+                                        editEducationItem={editEducationItem}
+                                        addEducationItem={addEducationItem}
+                                        setEducationInfo={setEducationInfo}
+                                        setEditEducationItem={setEditEducationItem}
+                                        setAddEducationItem={setAddEducationItem}
+                                        saveEducationEdit={saveEducationEdit}
+                                        removeEducation={removeEducation}
+                                        addEducation={addEducation}
+                                        toggleEducation={toggleEducation}
+                                    />}
+                                </section>
 
-                                        {experienceCardVisible && <Experience
-                                            experienceInfo={experienceInfo}
-                                            editExperienceItem={editExperienceItem}
-                                            addExperienceItem={addExperienceItem}
-                                            setExperienceInfo={setExperienceInfo}
-                                            setEditExperienceItem={setEditExperienceItem}
-                                            setAddExperienceItem={setAddExperienceItem}
-                                            saveExperienceEdit={saveExperienceEdit}
-                                            removeExperience={removeExperience}
-                                            addExperience={addExperience}
-                                            toggleExperience={toggleExperience}
-                                        />}
+                                <section className="experience card">
+                                    <div className="card-header" onClick={() => setExperienceCardVisible(!experienceCardVisible)} >
+                                        <img src={work} alt="" />
+                                        <h1>Experience</h1>
+                                        <img src={expandIcon} className={experienceCardVisible ? 'expanded' : 'collapsed'} />
+                                    </div>
 
-                                    </section>
+                                    {experienceCardVisible && <Experience
+                                        experienceInfo={experienceInfo}
+                                        editExperienceItem={editExperienceItem}
+                                        addExperienceItem={addExperienceItem}
+                                        setExperienceInfo={setExperienceInfo}
+                                        setEditExperienceItem={setEditExperienceItem}
+                                        setAddExperienceItem={setAddExperienceItem}
+                                        saveExperienceEdit={saveExperienceEdit}
+                                        removeExperience={removeExperience}
+                                        addExperience={addExperience}
+                                        toggleExperience={toggleExperience}
+                                    />}
+                                </section>
                             </>
-                    : null                    
+                    :   <>
+                            <section className='layout card'>
+                                <h2>Layout</h2>
+                                <LayoutCard 
+                                    currentLayout={currentLayout}
+                                    setCurrentLayout={changeLayoutDesign}
+                                />
+                            </section>
+
+                            <section className='color card'>
+
+                            </section>
+
+                            <section className='font card'>
+
+                            </section>
+                        </>
                 }
                 
             </section>
+            { 
+                currentLayout === 0
+                    ?   <section className="resume">
+                            <div className="left-side">
+                                <PersonalDetailsResume
+                                    fullName={personalInfo.fullName}
+                                    email={personalInfo.email}
+                                    phoneNumber={personalInfo.phoneNumber}
+                                    address={personalInfo.address}
+                                />
+                            </div>
+                            <div className="right-side">
+                                <div className='education-list'>
+                                    <h2>Education</h2>
 
-            <section className="resume">
-                <div className="left-side">
-                    <PersonalDetailsResume
-                        fullName={personalInfo.fullName}
-                        email={personalInfo.email}
-                        phoneNumber={personalInfo.phoneNumber}
-                        address={personalInfo.address}
-                    />
-                </div>
-                <div className="right-side">
-                    <div className='education-list'>
-                        <h2>Education</h2>
+                                    {educationInfo.map((el) => {
+                                        // IF EDUCATION IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
+                                        if (editEducationItem && editEducationItem.key === el.key) {
+                                            return (
+                                                <div key={editEducationItem.key} className='education-item'>
+                                                    <div className='time-location'>
+                                                        <p>{editEducationItem.startDate} - {editEducationItem.endDate}</p>
+                                                        <p>{editEducationItem.location}</p>
+                                                    </div>
+                                                    <div className='school-info'>
+                                                        <p><strong>{editEducationItem.schoolName}</strong></p>
+                                                        <p>{editEducationItem.degree}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                        // RENDER SAVED EDUCATION
+                                        return el.hidden === false
+                                            ? (
+                                                <div key={el.key} className='education-item'>
+                                                    <div className='time-location'>
+                                                        <p>{el.startDate} - {el.endDate}</p>
+                                                        <p>{el.location}</p>
+                                                    </div>
+                                                    <div className='school-info'>
+                                                        <p><strong>{el.schoolName}</strong></p>
+                                                        <p>{el.degree}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                            : null
+                                    })}
 
-                        {educationInfo.map((el) => {
-                            // IF EDUCATION IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
-                            if (editEducationItem && editEducationItem.key === el.key) {
-                                return (
-                                    <div key={editEducationItem.key} className='education-item'>
-                                        <div className='time-location'>
-                                            <p>{editEducationItem.startDate} - {editEducationItem.endDate}</p>
-                                            <p>{editEducationItem.location}</p>
-                                        </div>
-                                        <div className='school-info'>
-                                            <p><strong>{editEducationItem.schoolName}</strong></p>
-                                            <p>{editEducationItem.degree}</p>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            // RENDER SAVED EDUCATION
-                            return el.hidden === false 
-                            ? (
-                                <div key={el.key} className='education-item'>
-                                    <div className='time-location'>
-                                        <p>{el.startDate} - {el.endDate}</p>
-                                        <p>{el.location}</p>
-                                    </div>
-                                    <div className='school-info'>
-                                        <p><strong>{el.schoolName}</strong></p>
-                                        <p>{el.degree}</p>
-                                    </div>
+                                    { // RENDER NEW EDUCATION
+                                        addEducationItem
+                                            ? <div className='education-item'>
+                                                <div className='time-location'>
+                                                    <p>{addEducationItem.startDate} - {addEducationItem.endDate}</p>
+                                                    <p>{addEducationItem.location}</p>
+                                                </div>
+                                                <div className='school-info'>
+                                                    <p><strong>{addEducationItem.schoolName}</strong></p>
+                                                    <p>{addEducationItem.degree}</p>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
                                 </div>
-                            )
-                            : null
-                        })}
-                        
-                        { // RENDER NEW EDUCATION
-                            addEducationItem 
-                                ? <div className='education-item'>
-                                    <div className='time-location'>
-                                        <p>{addEducationItem.startDate} - {addEducationItem.endDate}</p>
-                                        <p>{addEducationItem.location}</p>
-                                    </div>
-                                    <div className='school-info'>
-                                        <p><strong>{addEducationItem.schoolName}</strong></p>
-                                        <p>{addEducationItem.degree}</p>
-                                    </div>
-                                </div>
-                                : null
-                        }
-                    </div>
 
-                    <div className='experience-list'>
-                        <h2>Experience</h2>
+                                <div className='experience-list'>
+                                    <h2>Experience</h2>
 
-                        {experienceInfo.map((el) => {
-                            // IF EXPERIENCE IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
-                            if (editExperienceItem && editExperienceItem.key === el.key) {
-                                return (
-                                    <div key={editExperienceItem.key} className='experience-item'>
-                                        <div className='time-location'>
-                                            <p>{editExperienceItem.startDate} - {editExperienceItem.endDate}</p>
-                                            <p>{editExperienceItem.location}</p>
-                                        </div>
-                                        <div className='company-info'>
-                                            <p><strong>{editExperienceItem.companyName}</strong></p>
-                                            <p>{editExperienceItem.positionTitle}</p>
-                                            <p>{editExperienceItem.description}</p>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            // RENDER SAVED EXPERIENCE
-                            return el.hidden === false
-                            ? (
-                                <div key={el.key} className='experience-item'>
-                                    <div className='time-location'>
-                                        <p>{el.startDate} - {el.endDate}</p>
-                                        <p>{el.location}</p>
-                                    </div>
-                                    <div className='company-info'>
-                                        <p><strong>{el.companyName}</strong></p>
-                                        <p>{el.positionTitle}</p>
-                                        <p>{el.description}</p>
-                                    </div>
-                                </div>
-                            )
-                            : null;
-                        })}
+                                    {experienceInfo.map((el) => {
+                                        // IF EXPERIENCE IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
+                                        if (editExperienceItem && editExperienceItem.key === el.key) {
+                                            return (
+                                                <div key={editExperienceItem.key} className='experience-item'>
+                                                    <div className='time-location'>
+                                                        <p>{editExperienceItem.startDate} - {editExperienceItem.endDate}</p>
+                                                        <p>{editExperienceItem.location}</p>
+                                                    </div>
+                                                    <div className='company-info'>
+                                                        <p><strong>{editExperienceItem.companyName}</strong></p>
+                                                        <p>{editExperienceItem.positionTitle}</p>
+                                                        <p>{editExperienceItem.description}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                        // RENDER SAVED EXPERIENCE
+                                        return el.hidden === false
+                                            ? (
+                                                <div key={el.key} className='experience-item'>
+                                                    <div className='time-location'>
+                                                        <p>{el.startDate} - {el.endDate}</p>
+                                                        <p>{el.location}</p>
+                                                    </div>
+                                                    <div className='company-info'>
+                                                        <p><strong>{el.companyName}</strong></p>
+                                                        <p>{el.positionTitle}</p>
+                                                        <p>{el.description}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                            : null;
+                                    })}
 
-                        { // RENDER NEW EXPERIENCE
-                            addExperienceItem
-                                ? <div className='experience-item'>
-                                    <div className='time-location'>
-                                        <p>{addExperienceItem.startDate} - {addExperienceItem.endDate}</p>
-                                        <p>{addExperienceItem.location}</p>
-                                    </div>
-                                    <div className='company-info'>
-                                        <p><strong>{addExperienceItem.companyName}</strong></p>
-                                        <p>{addExperienceItem.positionTitle}</p>
-                                        <p>{addExperienceItem.description}</p>
-                                    </div>
+                                    { // RENDER NEW EXPERIENCE
+                                        addExperienceItem
+                                            ? <div className='experience-item'>
+                                                <div className='time-location'>
+                                                    <p>{addExperienceItem.startDate} - {addExperienceItem.endDate}</p>
+                                                    <p>{addExperienceItem.location}</p>
+                                                </div>
+                                                <div className='company-info'>
+                                                    <p><strong>{addExperienceItem.companyName}</strong></p>
+                                                    <p>{addExperienceItem.positionTitle}</p>
+                                                    <p>{addExperienceItem.description}</p>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
                                 </div>
-                                : null
-                        }
-                    </div>
-                </div>
-            </section>
+                            </div>
+                        </section>
+                    :   <section className="resume">
+                            <div className="left-side">
+                                <div className='education-list'>
+                                    <h2>Education</h2>
+
+                                    {educationInfo.map((el) => {
+                                        // IF EDUCATION IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
+                                        if (editEducationItem && editEducationItem.key === el.key) {
+                                            return (
+                                                <div key={editEducationItem.key} className='education-item'>
+                                                    <div className='time-location'>
+                                                        <p>{editEducationItem.startDate} - {editEducationItem.endDate}</p>
+                                                        <p>{editEducationItem.location}</p>
+                                                    </div>
+                                                    <div className='school-info'>
+                                                        <p><strong>{editEducationItem.schoolName}</strong></p>
+                                                        <p>{editEducationItem.degree}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                        // RENDER SAVED EDUCATION
+                                        return el.hidden === false
+                                            ? (
+                                                <div key={el.key} className='education-item'>
+                                                    <div className='time-location'>
+                                                        <p>{el.startDate} - {el.endDate}</p>
+                                                        <p>{el.location}</p>
+                                                    </div>
+                                                    <div className='school-info'>
+                                                        <p><strong>{el.schoolName}</strong></p>
+                                                        <p>{el.degree}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                            : null
+                                    })}
+
+                                    { // RENDER NEW EDUCATION
+                                        addEducationItem
+                                            ? <div className='education-item'>
+                                                <div className='time-location'>
+                                                    <p>{addEducationItem.startDate} - {addEducationItem.endDate}</p>
+                                                    <p>{addEducationItem.location}</p>
+                                                </div>
+                                                <div className='school-info'>
+                                                    <p><strong>{addEducationItem.schoolName}</strong></p>
+                                                    <p>{addEducationItem.degree}</p>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
+                                </div>
+
+                                <div className='experience-list'>
+                                    <h2>Experience</h2>
+
+                                    {experienceInfo.map((el) => {
+                                        // IF EXPERIENCE IS CURRENTLY BEING EDITED, RENDER THIS ONE INSTEAD
+                                        if (editExperienceItem && editExperienceItem.key === el.key) {
+                                            return (
+                                                <div key={editExperienceItem.key} className='experience-item'>
+                                                    <div className='time-location'>
+                                                        <p>{editExperienceItem.startDate} - {editExperienceItem.endDate}</p>
+                                                        <p>{editExperienceItem.location}</p>
+                                                    </div>
+                                                    <div className='company-info'>
+                                                        <p><strong>{editExperienceItem.companyName}</strong></p>
+                                                        <p>{editExperienceItem.positionTitle}</p>
+                                                        <p>{editExperienceItem.description}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                        // RENDER SAVED EXPERIENCE
+                                        return el.hidden === false
+                                            ? (
+                                                <div key={el.key} className='experience-item'>
+                                                    <div className='time-location'>
+                                                        <p>{el.startDate} - {el.endDate}</p>
+                                                        <p>{el.location}</p>
+                                                    </div>
+                                                    <div className='company-info'>
+                                                        <p><strong>{el.companyName}</strong></p>
+                                                        <p>{el.positionTitle}</p>
+                                                        <p>{el.description}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                            : null;
+                                    })}
+
+                                    { // RENDER NEW EXPERIENCE
+                                        addExperienceItem
+                                            ? <div className='experience-item'>
+                                                <div className='time-location'>
+                                                    <p>{addExperienceItem.startDate} - {addExperienceItem.endDate}</p>
+                                                    <p>{addExperienceItem.location}</p>
+                                                </div>
+                                                <div className='company-info'>
+                                                    <p><strong>{addExperienceItem.companyName}</strong></p>
+                                                    <p>{addExperienceItem.positionTitle}</p>
+                                                    <p>{addExperienceItem.description}</p>
+                                                </div>
+                                            </div>
+                                            : null
+                                    }
+                                </div>
+                            </div>
+                            <div className="right-side">
+                                <PersonalDetailsResume
+                                    fullName={personalInfo.fullName}
+                                    email={personalInfo.email}
+                                    phoneNumber={personalInfo.phoneNumber}
+                                    address={personalInfo.address}
+                                />
+                            </div>
+                        </section>
+            }
         </main>
     )
 }
